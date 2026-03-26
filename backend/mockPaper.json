@@ -1,0 +1,196 @@
+[
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 1,
+    "type": "MCQ",
+    "questionText": "This is the text for Question 1. Which option is correct?",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+1+Image",
+    "options": [
+      { "id": "A", "text": "Option A", "isCorrect": false },
+      { "id": "B", "text": "Option B", "isCorrect": true },
+      { "id": "C", "text": "Option C", "isCorrect": false },
+      { "id": "D", "text": "Option D", "isCorrect": false }
+    ],
+    "tags": ["Visualization", "Spatial Ability"],
+    "estimatedTimeSeconds": 60,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "A",
+        "errorType": "Perspective Error",
+        "feedback": "You looked at the front view instead of the top view."
+      }
+    ]
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 2,
+    "type": "NAT",
+    "questionText": "This is the text for Question 2. Enter a numerical value.",
+    "imageUrl": null,
+    "correctNumericalAnswer": 42,
+    "acceptableRange": { "min": 42, "max": 42 },
+    "tags": ["Math", "Geometry"],
+    "estimatedTimeSeconds": 120,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "40",
+        "errorType": "Calculation Error",
+        "feedback": "You forgot to carry the 2."
+      }
+    ]
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 3,
+    "type": "MCQ",
+    "questionText": "This is the text for Question 3. Choose the right pattern.",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+3+Image",
+    "options": [
+      { "id": "A", "text": "Option A", "isCorrect": false },
+      { "id": "B", "text": "Option B", "isCorrect": false },
+      { "id": "C", "text": "Option C", "isCorrect": true },
+      { "id": "D", "text": "Option D", "isCorrect": false }
+    ],
+    "tags": ["Pattern Recognition", "Logic"],
+    "estimatedTimeSeconds": 90,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "B",
+        "errorType": "Logic Error",
+        "feedback": "You reversed the sequence order."
+      }
+    ]
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 4,
+    "type": "NAT",
+    "questionText": "This is the text for Question 4. Count the number of triangles.",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+4+Image",
+    "correctNumericalAnswer": 15,
+    "acceptableRange": { "min": 15, "max": 15 },
+    "tags": ["Observation", "Counting"],
+    "estimatedTimeSeconds": 150,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "12",
+        "errorType": "Observation Error",
+        "feedback": "You missed the 3 hidden triangles in the center."
+      }
+    ]
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 5,
+    "type": "MCQ",
+    "questionText": "This is the text for Question 5. Identify the odd one out.",
+    "imageUrl": null,
+    "options": [
+      { "id": "A", "text": "Option A", "isCorrect": true },
+      { "id": "B", "text": "Option B", "isCorrect": false },
+      { "id": "C", "text": "Option C", "isCorrect": false },
+      { "id": "D", "text": "Option D", "isCorrect": false }
+    ],
+    "tags": ["Analytical Reasoning", "Odd One Out"],
+    "estimatedTimeSeconds": 45,
+    "errorDiagnostics": []
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 6,
+    "type": "NAT",
+    "questionText": "This is the text for Question 6. Calculate the area.",
+    "imageUrl": null,
+    "correctNumericalAnswer": 105.5,
+    "acceptableRange": { "min": 105.0, "max": 106.0 },
+    "tags": ["Math", "Mensuration"],
+    "estimatedTimeSeconds": 180,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "100",
+        "errorType": "Formula Error",
+        "feedback": "You used the formula for a rectangle instead of a trapezoid."
+      }
+    ]
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 7,
+    "type": "MCQ",
+    "questionText": "This is the text for Question 7. Which shadow matches the object?",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+7+Image",
+    "options": [
+      { "id": "A", "text": "Option A", "isCorrect": false },
+      { "id": "B", "text": "Option B", "isCorrect": false },
+      { "id": "C", "text": "Option C", "isCorrect": false },
+      { "id": "D", "text": "Option D", "isCorrect": true }
+    ],
+    "tags": ["Visualization", "Light and Shadow"],
+    "estimatedTimeSeconds": 120,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "A",
+        "errorType": "Light Source Error",
+        "feedback": "You assumed the light was from the left, but it is from the top-right."
+      }
+    ]
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 8,
+    "type": "NAT",
+    "questionText": "This is the text for Question 8. How many total blocks are used?",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+8+Image",
+    "correctNumericalAnswer": 27,
+    "acceptableRange": { "min": 27, "max": 27 },
+    "tags": ["Spatial Ability", "Counting"],
+    "estimatedTimeSeconds": 90,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "25",
+        "errorType": "Hidden Object Error",
+        "feedback": "You forgot to count the structural blocks supporting the top layer."
+      }
+    ]
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 9,
+    "type": "MCQ",
+    "questionText": "This is the text for Question 9. Select the correct unfolded cube.",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+9+Image",
+    "options": [
+      { "id": "A", "text": "Option A", "isCorrect": false },
+      { "id": "B", "text": "Option B", "isCorrect": true },
+      { "id": "C", "text": "Option C", "isCorrect": false },
+      { "id": "D", "text": "Option D", "isCorrect": false }
+    ],
+    "tags": ["Spatial Ability", "Cube Unfolding"],
+    "estimatedTimeSeconds": 120,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "C",
+        "errorType": "Orientation Error",
+        "feedback": "The star symbol on Option C is rotated 90 degrees incorrectly."
+      }
+    ]
+  },
+  {
+    "paperName": "UCEED Dummy Mock 1",
+    "questionNumber": 10,
+    "type": "NAT",
+    "questionText": "This is the text for Question 10. Find the missing number in the sequence.",
+    "imageUrl": null,
+    "correctNumericalAnswer": 89,
+    "acceptableRange": { "min": 89, "max": 89 },
+    "tags": ["Math", "Number Series"],
+    "estimatedTimeSeconds": 60,
+    "errorDiagnostics": [
+      {
+        "wrongAnswer": "88",
+        "errorType": "Calculation Error",
+        "feedback": "You added instead of following the Fibonacci sequence."
+      }
+    ]
+  }
+]
