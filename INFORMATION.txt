@@ -1,0 +1,21 @@
+27th march, 1st entry
+
+ok so,
+frontend -> mocks portion working, only mocks portion tho, and only for uceed, but that's not a big issue.
+backend -> json files are being read and being transferred into the exam window, just need to modify the UI for the exam window, and we're good to go 
+problem: the data for mcq and nat is not being stored right now, but tomorrow i'm gonna make it so it gets saved in the database as well
+
+things to do: 
+-user access, every user is going to have their own dataset which will house their exam answers and history of papers.
+-no idea if the analytics page is working or is in sync with the answers will only know once the answers are saved
+-make user differntiation thing actually, it's going to be much harder the more i push it forth.
+
+aside from that, unexpected amounts of progress so far.
+
+need to study a bit on how mongo and mongoose work. but won't be too hard.
+
+create 3 more sample question paper sets with varying number of questions and duration.
+
+need to create a NID page, then pages for others too
+
+code is getting very messy, don't like this one bit, will spend the weekend making it more understandable
