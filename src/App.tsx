@@ -5,11 +5,13 @@ import PastPapers from './pages/PastPapers';
 import TestSubmitted from './pages/TestSubmitted';
 import Analytics from './pages/Analytics';
 import TestEnvironment from './pages/TestEnvironment';
+import Onboarding from './pages/Onboarding'; // Add this
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/onboarding" element={<Onboarding />} /> {/* Add this */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/tests" replace />} />
           <Route path="tests" element={<TestsDashboard />} />
