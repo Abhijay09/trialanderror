@@ -1,17 +1,77 @@
 import { useState, useEffect } from 'react';
-import { Mail, Bell, User, Download, ChevronRight, CheckCircle2, XCircle } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
+import { Mail, Bell, User, Download, ChevronRight } from 'lucide-react';
+import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Analytics() {
-  // These will be populated from the backend
-  const [bellCurveData, setBellCurveData] = useState<any[]>([]);
-  const [timeData, setTimeData] = useState<any[]>([]);
-  const [sectionalData, setSectionalData] = useState<any[]>([]);
-  const [errorLogData, setErrorLogData] = useState<any[]>([]);
+  const { user } = useAuth() || {};
+  const navigate = useNavigate();
+
+  const [result, setResult] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // TODO: Fetch analytics data from backend
-  }, []);
+    // 1. Ensure user is logged in
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    // 2. Fetch their latest test result
+    fetch(`http://localhost:5000/api/results/${user._id}/latest`)
+      .then(res => {
+        if (!res.ok) throw new Error("No test results found. Take a test first!");
+        return res.json();
+      })
+      .then(data => {
+        setResult(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [user, navigate]);
+
+  if (loading) return <div className="min-h-screen flex justify-center items-center font-bold text-gray-500">Loading your analytics...</div>;
+  if (error) return <div className="min-h-screen flex flex-col justify-center items-center text-gray-500"><h2 className="text-2xl font-bold text-gray-900 mb-2">No Data Yet</h2><p className="mb-4">{error}</p><button onClick={() => navigate('/tests')} className="bg-teal-500 text-white px-6 py-2 rounded-lg">Go to Tests</button></div>;
+
+  // --- CALCULATE REAL DATA ---
+  const totalMarks = result.score;
+  const totalQuestions = result.totalQuestions;
+  const accuracy = totalQuestions > 0 ? Math.round((totalMarks / totalQuestions) * 100) : 0;
+  
+  // Categorize answers
+  const correctAnswers = result.answers.filter((a: any) => a.isCorrect);
+  const unattemptedAnswers = result.answers.filter((a: any) => !a.selectedAnswer);
+  const wrongAnswers = result.answers.filter((a: any) => a.selectedAnswer && !a.isCorrect);
+
+  // Generate Strategic Error Log dynamically from wrong answers
+  const errorLogData = wrongAnswers.map((ans: any) => ({
+    id: `Q${ans.questionNumber}`,
+    section: 'Part A',
+    category: 'Incorrect Concept', // Hardcoded for now until diagnostic data is added to the backend schema
+    type: 'danger',
+    time: 'NA',
+    marks: '-1' // Typical negative marking
+  }));
+
+  // Create a Sectional row based on overall data
+  const sectionalData = [{
+    name: 'Part A - Overall',
+    range: `Q1 - Q${totalQuestions}`,
+    correct: correctAnswers.length,
+    wrong: wrongAnswers.length,
+    unattempted: unattemptedAnswers.length,
+    accuracy: `${accuracy}%`,
+    points: totalMarks
+  }];
+
+  // Dummy Chart Data (Since we don't track per-minute analytics yet)
+  const emptyBellCurve = [{ value: 0 }, { value: 20 }, { value: 60 }, { value: 100 }, { value: 60 }, { value: 20 }, { value: 0 }];
+  const emptyTimeData = [{ name: 'Q1-5', time: 10 }, { name: 'Q6-10', time: 15 }];
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -22,15 +82,14 @@ export default function Analytics() {
           <button className="p-2 text-gray-500 hover:text-gray-900"><Mail className="w-5 h-5" /></button>
           <button className="p-2 text-gray-500 hover:text-gray-900"><Bell className="w-5 h-5" /></button>
           <button className="bg-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
-            <Download className="w-4 h-4" /> export
+            <Download className="w-4 h-4" /> Export
           </button>
-          <button className="p-2 text-gray-500 hover:text-gray-900"><User className="w-5 h-5" /></button>
         </div>
       </div>
 
       <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Part A review</h2>
-        <p className="text-gray-500">A Deeper analytics of your Part A section</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">{result.paperName} Review</h2>
+        <p className="text-gray-500">A deeper analytics review of your latest attempt</p>
       </div>
 
       {/* Top Stats Cards */}
@@ -38,33 +97,29 @@ export default function Analytics() {
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
           <p className="text-gray-500 text-sm mb-2">Total Marks</p>
           <div className="flex items-baseline gap-1 mb-2">
-            <span className="text-4xl font-bold text-gray-900">0</span>
-            <span className="text-gray-400">/0</span>
+            <span className="text-4xl font-bold text-teal-600">{totalMarks}</span>
+            <span className="text-gray-400">/{totalQuestions}</span>
           </div>
-          <p className="text-gray-400 text-sm font-medium flex items-center gap-1">
-            NA
-          </p>
+          <p className="text-teal-600 text-sm font-medium flex items-center gap-1">Based on saved answers</p>
         </div>
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
           <p className="text-gray-500 text-sm mb-2">Global Rank</p>
-          <div className="text-4xl font-bold text-gray-900 mb-2">NA</div>
-          <p className="text-gray-400 text-sm font-medium flex items-center gap-1">
-            NA
-          </p>
+          <div className="text-4xl font-bold text-gray-400 mb-2">NA</div>
+          <p className="text-gray-400 text-sm font-medium flex items-center gap-1">More data required</p>
         </div>
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
           <p className="text-gray-500 text-sm mb-2">Percentile</p>
-          <div className="text-4xl font-bold text-gray-900 mb-2">NA</div>
-          <p className="text-gray-500 text-sm">NA</p>
+          <div className="text-4xl font-bold text-gray-400 mb-2">NA</div>
+          <p className="text-gray-400 text-sm">More data required</p>
         </div>
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
           <p className="text-gray-500 text-sm mb-2">Accuracy</p>
-          <div className="text-4xl font-bold text-gray-900 mb-4">0%</div>
+          <div className="text-4xl font-bold text-gray-900 mb-4">{accuracy}%</div>
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-              <div className="h-full bg-teal-500 w-[0%]"></div>
+              <div className="h-full bg-teal-500 transition-all duration-1000" style={{ width: `${accuracy}%` }}></div>
             </div>
-            <span>Target: NA</span>
+            <span>Target: 80%</span>
           </div>
         </div>
       </div>
@@ -73,67 +128,35 @@ export default function Analytics() {
         {/* Left Column (Main Content) */}
         <div className="col-span-8 space-y-8">
           
-          {/* Score Distribution Range */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+          {/* Score Distribution Range (NA logic) */}
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm opacity-50 grayscale">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h3 className="text-lg font-bold text-gray-900">Score Distribution Range</h3>
-                <p className="text-sm text-gray-500">Comparative percentile analysis</p>
-              </div>
-              <div className="flex gap-4 text-xs font-medium">
-                <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-gray-200"></div> Cutoff</span>
-                <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-teal-500"></div> You</span>
-                <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-green-600"></div> Topper</span>
+                <h3 className="text-lg font-bold text-gray-900">Score Distribution Range (NA)</h3>
+                <p className="text-sm text-gray-500">Comparative percentile analysis requires more users</p>
               </div>
             </div>
             <div className="h-64 w-full flex items-center justify-center text-gray-400">
-              {bellCurveData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={bellCurveData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.1}/>
-                        <stop offset="95%" stopColor="#14b8a6" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <Tooltip />
-                    <Area type="monotone" dataKey="value" stroke="#14b8a6" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              ) : (
-                "No data available"
-              )}
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={emptyBellCurve} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#9ca3af" stopOpacity={0.1}/>
+                      <stop offset="95%" stopColor="#9ca3af" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <Tooltip />
+                  <Area type="monotone" dataKey="value" stroke="#9ca3af" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Time Expenditure Analysis */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Time Expenditure Analysis</h3>
-            <p className="text-sm text-gray-500 mb-6">Time spent per Question Group (in minutes)</p>
-            <div className="h-48 w-full flex items-center justify-center text-gray-400">
-              {timeData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={timeData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                    <Tooltip cursor={{fill: 'transparent'}} />
-                    <Bar dataKey="time" radius={[4, 4, 0, 0]}>
-                      {timeData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color || '#b2dfdb'} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              ) : (
-                "No data available"
-              )}
-            </div>
-          </div>
-
-          {/* Sectional Deep-Dive */}
+          {/* Sectional Deep-Dive (POPULATED WITH REAL DATA) */}
           <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold text-gray-900">Sectional Deep-Dive</h3>
-              <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">Part A</span>
+              <span className="px-3 py-1 bg-teal-50 text-teal-600 text-xs font-bold rounded-full uppercase">Real Data</span>
             </div>
             
             <div className="overflow-x-auto">
@@ -149,100 +172,30 @@ export default function Analytics() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
-                  {sectionalData.length > 0 ? (
-                    sectionalData.map((row, i) => (
-                      <tr key={i}>
-                        <td className="py-4">
-                          <div className="font-bold text-gray-900">{row.name}</div>
-                          <div className="text-xs text-gray-400">{row.range}</div>
-                        </td>
-                        <td className="py-4 text-center font-bold text-teal-500">{row.correct}</td>
-                        <td className="py-4 text-center font-bold text-red-500">{row.wrong}</td>
-                        <td className="py-4 text-center font-medium text-gray-500">{row.unattempted}</td>
-                        <td className="py-4 text-center font-bold text-gray-900">{row.accuracy}</td>
-                        <td className="py-4 text-right font-bold text-gray-900">{row.points}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={6} className="py-8 text-center text-gray-400">No sectional data available</td>
+                  {sectionalData.map((row, i) => (
+                    <tr key={i}>
+                      <td className="py-4">
+                        <div className="font-bold text-gray-900">{row.name}</div>
+                        <div className="text-xs text-gray-400">{row.range}</div>
+                      </td>
+                      <td className="py-4 text-center font-bold text-teal-500">{row.correct}</td>
+                      <td className="py-4 text-center font-bold text-red-500">{row.wrong}</td>
+                      <td className="py-4 text-center font-medium text-gray-500">{row.unattempted}</td>
+                      <td className="py-4 text-center font-bold text-gray-900">{row.accuracy}</td>
+                      <td className="py-4 text-right font-bold text-gray-900">{row.points}</td>
                     </tr>
-                  )}
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
 
-          {/* Part B: Drawing & Design Preview */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-6">Part B: Drawing & Design Preview</h3>
-            <div className="flex gap-6">
-              <div className="w-64 h-40 bg-gray-100 rounded-xl overflow-hidden shrink-0 border border-gray-200 flex items-center justify-center text-gray-400 text-sm">
-                [Drawing Image]
-              </div>
-              <div className="flex-1 flex flex-col">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-xs text-gray-500 font-medium mb-1">Summary</p>
-                    <p className="text-sm text-gray-400 italic">
-                      No summary available yet.
-                    </p>
-                  </div>
-                  <div className="text-right shrink-0 ml-4">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Quick Score</p>
-                    <div className="text-2xl font-bold text-gray-400">0<span className="text-sm">/0</span></div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-gray-600">Perspective</span>
-                    </div>
-                    <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-teal-500 w-[0%]"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-gray-600">Drafting</span>
-                    </div>
-                    <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-teal-500 w-[0%]"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-gray-600">Composition</span>
-                    </div>
-                    <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-teal-500 w-[0%]"></div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-auto flex justify-end">
-                  <button className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors">
-                    Get deeper analytics <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Strategic Error Log */}
+          {/* Strategic Error Log (POPULATED WITH REAL WRONG ANSWERS) */}
           <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h3 className="text-lg font-bold text-gray-900">Strategic Error Log</h3>
                 <p className="text-sm text-gray-500">Critical analysis of missed scoring opportunities</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <button className="text-sm font-medium text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors">Filter by Category</button>
-                <button className="text-sm font-medium text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors">Sort by Marks Lost</button>
-                <button className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium px-4 py-1.5 rounded-lg flex items-center gap-1 transition-colors">
-                  view your answers <ChevronRight className="w-4 h-4" />
-                </button>
               </div>
             </div>
 
@@ -258,48 +211,30 @@ export default function Analytics() {
                 </thead>
                 <tbody className="divide-y divide-gray-50">
                   {errorLogData.length > 0 ? (
-                    errorLogData.map((row, i) => (
+                    errorLogData.map((row: any, i: number) => (
                       <tr key={i}>
                         <td className="py-4">
                           <div className="font-bold text-gray-900">{row.id}</div>
                           <div className="text-xs text-gray-400">{row.section}</div>
                         </td>
                         <td className="py-4 text-center">
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                            row.type === 'danger' ? 'bg-red-100 text-red-600' :
-                            row.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
-                            'bg-green-100 text-green-700'
-                          }`}>
+                          <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-red-50 text-red-600 border border-red-100">
                             {row.category}
                           </span>
                         </td>
-                        <td className="py-4 text-center text-gray-600">
-                          {row.time.includes('CRITICAL') ? (
-                            <span className="text-red-500 font-medium">{row.time}</span>
-                          ) : row.time.includes('+') ? (
-                            <span>{row.time.split(' ')[0]} <span className="text-red-400 text-xs">{row.time.split(' ')[1]}</span></span>
-                          ) : (
-                            row.time
-                          )}
-                        </td>
+                        <td className="py-4 text-center text-gray-400 font-mono">NA</td>
                         <td className="py-4 text-right font-bold text-red-500">{row.marks}</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={4} className="py-8 text-center text-gray-400">No errors logged yet</td>
+                      <td colSpan={4} className="py-8 text-center text-gray-400 font-medium">No errors made! Perfect score.</td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
-            <div className="mt-4 text-right">
-              <button className="text-xs font-medium text-orange-400 border border-orange-200 px-3 py-1 rounded-full hover:bg-orange-50 transition-colors">
-                view all errors
-              </button>
-            </div>
           </div>
-
         </div>
 
         {/* Right Column (Sidebar) */}
@@ -308,48 +243,18 @@ export default function Analytics() {
             <h3 className="text-lg font-bold text-gray-900 mb-6">Cognitive SWOT Matrix</h3>
             
             <div className="space-y-6">
-              {/* Primary Proficiencies */}
               <div>
                 <h4 className="text-xs font-bold text-teal-600 uppercase tracking-wider flex items-center gap-2 mb-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-teal-500"></div> Primary Proficiencies
                 </h4>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2 text-sm text-gray-400 italic">
-                    Not enough data
-                  </li>
-                </ul>
+                <p className="text-sm font-medium text-gray-400 italic">Requires 5+ tests (NA)</p>
               </div>
 
-              {/* Identified Deficiencies */}
               <div>
                 <h4 className="text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-2 mb-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div> Identified Deficiencies
                 </h4>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2 text-sm text-gray-400 italic">
-                    Not enough data
-                  </li>
-                </ul>
-              </div>
-
-              {/* Growth Opportunities */}
-              <div>
-                <h4 className="text-xs font-bold text-teal-600 uppercase tracking-wider flex items-center gap-2 mb-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-teal-500"></div> Growth Opportunities
-                </h4>
-                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4">
-                  <p className="text-sm font-medium text-gray-400 italic">Not enough data</p>
-                </div>
-              </div>
-
-              {/* Risk Factors */}
-              <div>
-                <h4 className="text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-2 mb-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div> Risk Factors
-                </h4>
-                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4">
-                  <p className="text-sm font-medium text-gray-400 italic">Not enough data</p>
-                </div>
+                <p className="text-sm font-medium text-gray-400 italic">Requires 5+ tests (NA)</p>
               </div>
             </div>
           </div>
