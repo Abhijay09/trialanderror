@@ -1,15 +1,26 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-const AuthContext = createContext<any>(null);
+// Provide a safe default object so destructuring never throws a "null" error
+const AuthContext = createContext<any>({
+  user: null,
+  token: null,
+  login: () => {},
+  logout: () => {}
+});
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
 
+  // When the app loads, check if we have a saved user in the browser's memory
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (savedUser && token) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Failed to parse saved user data");
+      }
     }
   }, [token]);
 
@@ -21,7 +32,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
     setToken(null);
   };
@@ -33,4 +45,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Custom hook to use the auth context safely
 export const useAuth = () => useContext(AuthContext);

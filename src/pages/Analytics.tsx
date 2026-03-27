@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Mail, Bell, User, Download, ChevronRight } from 'lucide-react';
-import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
+import { Mail, Bell, Download, ChevronRight } from 'lucide-react';
+import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,25 +8,31 @@ export default function Analytics() {
   const { user } = useAuth() || {};
   const navigate = useNavigate();
 
-  const [result, setResult] = useState<any>(null);
+  const [allResults, setAllResults] = useState<any[]>([]);
+  const [selectedResultIndex, setSelectedResultIndex] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // 1. Ensure user is logged in
     if (!user) {
       navigate('/login');
       return;
     }
 
-    // 2. Fetch their latest test result
-    fetch(`http://localhost:5000/api/results/${user._id}/latest`)
+    fetch(`http://localhost:5000/api/results/${user._id}`)
       .then(res => {
-        if (!res.ok) throw new Error("No test results found. Take a test first!");
+        if (!res.ok) throw new Error("No test results found.");
         return res.json();
       })
       .then(data => {
-        setResult(data);
+        if (data.length === 0) {
+          setError("No test results found. Take a test first!");
+        } else {
+          // Data comes oldest-to-newest. We reverse it so newest is at index 0.
+          const reversedData = [...data].reverse();
+          setAllResults(reversedData);
+          setSelectedResultIndex(0);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -38,27 +44,27 @@ export default function Analytics() {
   if (loading) return <div className="min-h-screen flex justify-center items-center font-bold text-gray-500">Loading your analytics...</div>;
   if (error) return <div className="min-h-screen flex flex-col justify-center items-center text-gray-500"><h2 className="text-2xl font-bold text-gray-900 mb-2">No Data Yet</h2><p className="mb-4">{error}</p><button onClick={() => navigate('/tests')} className="bg-teal-500 text-white px-6 py-2 rounded-lg">Go to Tests</button></div>;
 
-  // --- CALCULATE REAL DATA ---
+  // The currently selected result
+  const result = allResults[selectedResultIndex];
+
+  // --- CALCULATE REAL DATA FOR SELECTED RESULT ---
   const totalMarks = result.score;
   const totalQuestions = result.totalQuestions;
   const accuracy = totalQuestions > 0 ? Math.round((totalMarks / totalQuestions) * 100) : 0;
   
-  // Categorize answers
   const correctAnswers = result.answers.filter((a: any) => a.isCorrect);
   const unattemptedAnswers = result.answers.filter((a: any) => !a.selectedAnswer);
   const wrongAnswers = result.answers.filter((a: any) => a.selectedAnswer && !a.isCorrect);
 
-  // Generate Strategic Error Log dynamically from wrong answers
   const errorLogData = wrongAnswers.map((ans: any) => ({
     id: `Q${ans.questionNumber}`,
     section: 'Part A',
-    category: 'Incorrect Concept', // Hardcoded for now until diagnostic data is added to the backend schema
+    category: 'Incorrect Concept', 
     type: 'danger',
     time: 'NA',
-    marks: '-1' // Typical negative marking
+    marks: '-1' 
   }));
 
-  // Create a Sectional row based on overall data
   const sectionalData = [{
     name: 'Part A - Overall',
     range: `Q1 - Q${totalQuestions}`,
@@ -69,9 +75,7 @@ export default function Analytics() {
     points: totalMarks
   }];
 
-  // Dummy Chart Data (Since we don't track per-minute analytics yet)
   const emptyBellCurve = [{ value: 0 }, { value: 20 }, { value: 60 }, { value: 100 }, { value: 60 }, { value: 20 }, { value: 0 }];
-  const emptyTimeData = [{ name: 'Q1-5', time: 10 }, { name: 'Q6-10', time: 15 }];
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -87,9 +91,23 @@ export default function Analytics() {
         </div>
       </div>
 
-      <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{result.paperName} Review</h2>
-        <p className="text-gray-500">A deeper analytics review of your latest attempt</p>
+      {/* --- ATTEMPT SELECTOR --- */}
+      <div className="text-center mb-10 flex flex-col items-center">
+        <select 
+            value={selectedResultIndex}
+            onChange={(e) => setSelectedResultIndex(Number(e.target.value))}
+            className="text-3xl font-bold text-gray-900 mb-2 bg-transparent border-none outline-none cursor-pointer hover:bg-gray-50 px-4 py-2 rounded-xl transition-colors appearance-none text-center"
+        >
+            {allResults.map((r, idx) => {
+                const date = new Date(r.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+                return (
+                    <option key={r._id} value={idx}>
+                        {r.paperName} (Attempt {allResults.length - idx}) - {date}
+                    </option>
+                );
+            })}
+        </select>
+        <p className="text-gray-500">A deeper analytics review of your selected attempt</p>
       </div>
 
       {/* Top Stats Cards */}
