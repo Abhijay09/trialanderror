@@ -19,3 +19,23 @@ create 3 more sample question paper sets with varying number of questions and du
 need to create a NID page, then pages for others too
 
 code is getting very messy, don't like this one bit, will spend the weekend making it more understandable
+
+27th march, 2nd entry
+
+onboaring page working pretty well,
+signup and login working well, need to fine tune some stuff but the heavy lifting has been finished.
+
+need to add a signout button as well. 
+
+aside from that added the result storing feature. 
+now the answers for the mock papers get stored in the database in the results folder.
+
+next up probably gonna make a tracking system or a saved progress system, 
+
+currently working on making the analytics page work in sync with the saved results.
+
+-next steps are getting analytics to work properly.
+-feature to go back and review older mock papers
+
+NEW ERROR: unable to fetch papers from the backend.
+(due to change in IP: need to whitelist IPs for the access)
