@@ -1,1 +1,48 @@
 @import "tailwindcss";
+
+/* 1. Tell Tailwind to use Satoshi as the default font for the entire website */
+@theme {
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* 2. Load the actual font files from your public folder */
+/* Change the filenames below if your extracted .ttf files are named slightly differently! */
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/Satoshi-Regular.ttf') format('truetype');
+  font-weight: 400; /* Normal */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/Satoshi-Medium.ttf') format('truetype');
+  font-weight: 500; /* Medium */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/Satoshi-Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/Satoshi-Black.ttf') format('truetype');
+  font-weight: 900; /* Extra Bold/Black */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 3. Apply it universally as a fallback */
+body {
+  font-family: "Satoshi", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

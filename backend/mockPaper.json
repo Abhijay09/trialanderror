@@ -1,10 +1,12 @@
 [
   {
-    "paperName": "UCEED Dummy Mock 1",
+    "paperName": "UCEED Mock Test 1",
+    "category": "Uceed",
+    "testDurationMinutes": 180,
     "questionNumber": 1,
     "type": "MCQ",
-    "questionText": "This is the text for Question 1. Which option is correct?",
-    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+1+Image",
+    "questionText": "Identify the correct top view of the given 3D object.",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=UCEED+1+Q1",
     "options": [
       { "id": "A", "text": "Option A", "isCorrect": false },
       { "id": "B", "text": "Option B", "isCorrect": true },
@@ -13,184 +15,225 @@
     ],
     "tags": ["Visualization", "Spatial Ability"],
     "estimatedTimeSeconds": 60,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "A",
-        "errorType": "Perspective Error",
-        "feedback": "You looked at the front view instead of the top view."
-      }
-    ]
+    "errorDiagnostics": [{ "wrongAnswer": "A", "errorType": "Perspective Error", "feedback": "Looked at front view instead of top." }]
   },
   {
-    "paperName": "UCEED Dummy Mock 1",
+    "paperName": "UCEED Mock Test 1",
+    "category": "Uceed",
+    "testDurationMinutes": 180,
     "questionNumber": 2,
     "type": "NAT",
-    "questionText": "This is the text for Question 2. Enter a numerical value.",
-    "imageUrl": null,
-    "correctNumericalAnswer": 42,
-    "acceptableRange": { "min": 42, "max": 42 },
-    "tags": ["Math", "Geometry"],
+    "questionText": "Count the total number of triangles in the figure.",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=UCEED+1+Q2",
+    "correctNumericalAnswer": 24,
+    "acceptableRange": { "min": 24, "max": 24 },
+    "tags": ["Observation"],
     "estimatedTimeSeconds": 120,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "40",
-        "errorType": "Calculation Error",
-        "feedback": "You forgot to carry the 2."
-      }
-    ]
+    "errorDiagnostics": [{ "wrongAnswer": "20", "errorType": "Counting Error", "feedback": "Missed the large overlapping triangles." }]
   },
   {
-    "paperName": "UCEED Dummy Mock 1",
+    "paperName": "UCEED Mock Test 1",
+    "category": "Uceed",
+    "testDurationMinutes": 180,
     "questionNumber": 3,
     "type": "MCQ",
-    "questionText": "This is the text for Question 3. Choose the right pattern.",
-    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+3+Image",
-    "options": [
-      { "id": "A", "text": "Option A", "isCorrect": false },
-      { "id": "B", "text": "Option B", "isCorrect": false },
-      { "id": "C", "text": "Option C", "isCorrect": true },
-      { "id": "D", "text": "Option D", "isCorrect": false }
-    ],
-    "tags": ["Pattern Recognition", "Logic"],
-    "estimatedTimeSeconds": 90,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "B",
-        "errorType": "Logic Error",
-        "feedback": "You reversed the sequence order."
-      }
-    ]
-  },
-  {
-    "paperName": "UCEED Dummy Mock 1",
-    "questionNumber": 4,
-    "type": "NAT",
-    "questionText": "This is the text for Question 4. Count the number of triangles.",
-    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+4+Image",
-    "correctNumericalAnswer": 15,
-    "acceptableRange": { "min": 15, "max": 15 },
-    "tags": ["Observation", "Counting"],
-    "estimatedTimeSeconds": 150,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "12",
-        "errorType": "Observation Error",
-        "feedback": "You missed the 3 hidden triangles in the center."
-      }
-    ]
-  },
-  {
-    "paperName": "UCEED Dummy Mock 1",
-    "questionNumber": 5,
-    "type": "MCQ",
-    "questionText": "This is the text for Question 5. Identify the odd one out.",
+    "questionText": "Which pattern completes the sequence?",
     "imageUrl": null,
     "options": [
-      { "id": "A", "text": "Option A", "isCorrect": true },
-      { "id": "B", "text": "Option B", "isCorrect": false },
-      { "id": "C", "text": "Option C", "isCorrect": false },
-      { "id": "D", "text": "Option D", "isCorrect": false }
+      { "id": "A", "text": "Pattern 1", "isCorrect": false },
+      { "id": "B", "text": "Pattern 2", "isCorrect": false },
+      { "id": "C", "text": "Pattern 3", "isCorrect": true },
+      { "id": "D", "text": "Pattern 4", "isCorrect": false }
     ],
-    "tags": ["Analytical Reasoning", "Odd One Out"],
+    "tags": ["Pattern Recognition"],
+    "estimatedTimeSeconds": 90,
+    "errorDiagnostics": []
+  },
+
+  {
+    "paperName": "UCEED Past Year 2023",
+    "category": "Uceed",
+    "testDurationMinutes": 180,
+    "questionNumber": 1,
+    "type": "NAT",
+    "questionText": "Find the total surface area of the resulting solid.",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=UCEED+2023+Q1",
+    "correctNumericalAnswer": 156,
+    "acceptableRange": { "min": 156, "max": 156 },
+    "tags": ["Geometry"],
+    "estimatedTimeSeconds": 150,
+    "errorDiagnostics": []
+  },
+  {
+    "paperName": "UCEED Past Year 2023",
+    "category": "Uceed",
+    "testDurationMinutes": 180,
+    "questionNumber": 2,
+    "type": "MCQ",
+    "questionText": "Select the correct unfolded cube.",
+    "imageUrl": null,
+    "options": [
+      { "id": "A", "text": "Cube A", "isCorrect": true },
+      { "id": "B", "text": "Cube B", "isCorrect": false },
+      { "id": "C", "text": "Cube C", "isCorrect": false },
+      { "id": "D", "text": "Cube D", "isCorrect": false }
+    ],
+    "tags": ["Spatial Ability"],
+    "estimatedTimeSeconds": 120,
+    "errorDiagnostics": []
+  },
+
+  {
+    "paperName": "UCEED Past Year 2022",
+    "category": "Uceed",
+    "testDurationMinutes": 180,
+    "questionNumber": 1,
+    "type": "MCQ",
+    "questionText": "Identify the odd one out.",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=UCEED+2022+Q1",
+    "options": [
+      { "id": "A", "text": "Image A", "isCorrect": false },
+      { "id": "B", "text": "Image B", "isCorrect": false },
+      { "id": "C", "text": "Image C", "isCorrect": false },
+      { "id": "D", "text": "Image D", "isCorrect": true }
+    ],
+    "tags": ["Analytical Reasoning"],
     "estimatedTimeSeconds": 45,
     "errorDiagnostics": []
   },
   {
-    "paperName": "UCEED Dummy Mock 1",
-    "questionNumber": 6,
+    "paperName": "UCEED Past Year 2022",
+    "category": "Uceed",
+    "testDurationMinutes": 180,
+    "questionNumber": 2,
     "type": "NAT",
-    "questionText": "This is the text for Question 6. Calculate the area.",
+    "questionText": "What is the missing number in the grid?",
     "imageUrl": null,
-    "correctNumericalAnswer": 105.5,
-    "acceptableRange": { "min": 105.0, "max": 106.0 },
-    "tags": ["Math", "Mensuration"],
-    "estimatedTimeSeconds": 180,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "100",
-        "errorType": "Formula Error",
-        "feedback": "You used the formula for a rectangle instead of a trapezoid."
-      }
-    ]
-  },
-  {
-    "paperName": "UCEED Dummy Mock 1",
-    "questionNumber": 7,
-    "type": "MCQ",
-    "questionText": "This is the text for Question 7. Which shadow matches the object?",
-    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+7+Image",
-    "options": [
-      { "id": "A", "text": "Option A", "isCorrect": false },
-      { "id": "B", "text": "Option B", "isCorrect": false },
-      { "id": "C", "text": "Option C", "isCorrect": false },
-      { "id": "D", "text": "Option D", "isCorrect": true }
-    ],
-    "tags": ["Visualization", "Light and Shadow"],
-    "estimatedTimeSeconds": 120,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "A",
-        "errorType": "Light Source Error",
-        "feedback": "You assumed the light was from the left, but it is from the top-right."
-      }
-    ]
-  },
-  {
-    "paperName": "UCEED Dummy Mock 1",
-    "questionNumber": 8,
-    "type": "NAT",
-    "questionText": "This is the text for Question 8. How many total blocks are used?",
-    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+8+Image",
-    "correctNumericalAnswer": 27,
-    "acceptableRange": { "min": 27, "max": 27 },
-    "tags": ["Spatial Ability", "Counting"],
+    "correctNumericalAnswer": 8,
+    "acceptableRange": { "min": 8, "max": 8 },
+    "tags": ["Math", "Logic"],
     "estimatedTimeSeconds": 90,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "25",
-        "errorType": "Hidden Object Error",
-        "feedback": "You forgot to count the structural blocks supporting the top layer."
-      }
-    ]
+    "errorDiagnostics": []
   },
+
   {
-    "paperName": "UCEED Dummy Mock 1",
-    "questionNumber": 9,
+    "paperName": "NID Prelims 2023",
+    "category": "NID",
+    "testDurationMinutes": 120,
+    "questionNumber": 1,
     "type": "MCQ",
-    "questionText": "This is the text for Question 9. Select the correct unfolded cube.",
-    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=Question+9+Image",
+    "questionText": "Identify the primary color principle used in this painting.",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=NID+2023+Q1",
     "options": [
-      { "id": "A", "text": "Option A", "isCorrect": false },
-      { "id": "B", "text": "Option B", "isCorrect": true },
-      { "id": "C", "text": "Option C", "isCorrect": false },
-      { "id": "D", "text": "Option D", "isCorrect": false }
+      { "id": "A", "text": "Analogous", "isCorrect": false },
+      { "id": "B", "text": "Complementary", "isCorrect": true },
+      { "id": "C", "text": "Monochromatic", "isCorrect": false },
+      { "id": "D", "text": "Triadic", "isCorrect": false }
     ],
-    "tags": ["Spatial Ability", "Cube Unfolding"],
-    "estimatedTimeSeconds": 120,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "C",
-        "errorType": "Orientation Error",
-        "feedback": "The star symbol on Option C is rotated 90 degrees incorrectly."
-      }
-    ]
+    "tags": ["Color Theory"],
+    "estimatedTimeSeconds": 60,
+    "errorDiagnostics": []
   },
   {
-    "paperName": "UCEED Dummy Mock 1",
-    "questionNumber": 10,
+    "paperName": "NID Prelims 2023",
+    "category": "NID",
+    "testDurationMinutes": 120,
+    "questionNumber": 2,
     "type": "NAT",
-    "questionText": "This is the text for Question 10. Find the missing number in the sequence.",
+    "questionText": "How many vanishing points are in a standard two-point perspective drawing?",
     "imageUrl": null,
-    "correctNumericalAnswer": 89,
-    "acceptableRange": { "min": 89, "max": 89 },
-    "tags": ["Math", "Number Series"],
+    "correctNumericalAnswer": 2,
+    "acceptableRange": { "min": 2, "max": 2 },
+    "tags": ["Perspective"],
+    "estimatedTimeSeconds": 30,
+    "errorDiagnostics": []
+  },
+  {
+    "paperName": "NID Prelims 2023",
+    "category": "NID",
+    "testDurationMinutes": 120,
+    "questionNumber": 3,
+    "type": "MCQ",
+    "questionText": "Which famous artist painted 'The Starry Night'?",
+    "imageUrl": null,
+    "options": [
+      { "id": "A", "text": "Claude Monet", "isCorrect": false },
+      { "id": "B", "text": "Vincent van Gogh", "isCorrect": true },
+      { "id": "C", "text": "Pablo Picasso", "isCorrect": false },
+      { "id": "D", "text": "Salvador Dali", "isCorrect": false }
+    ],
+    "tags": ["General Knowledge", "Art History"],
+    "estimatedTimeSeconds": 30,
+    "errorDiagnostics": []
+  },
+
+  {
+    "paperName": "NID Mock Test 1",
+    "category": "NID",
+    "testDurationMinutes": 120,
+    "questionNumber": 1,
+    "type": "MCQ",
+    "questionText": "Which font pairing is most appropriate for a law firm?",
+    "imageUrl": null,
+    "options": [
+      { "id": "A", "text": "Comic Sans & Papyrus", "isCorrect": false },
+      { "id": "B", "text": "Garamond & Helvetica", "isCorrect": false },
+      { "id": "C", "text": "Times New Roman & Arial", "isCorrect": true },
+      { "id": "D", "text": "Impact & Verdana", "isCorrect": false }
+    ],
+    "tags": ["Typography"],
+    "estimatedTimeSeconds": 45,
+    "errorDiagnostics": []
+  },
+  {
+    "paperName": "NID Mock Test 1",
+    "category": "NID",
+    "testDurationMinutes": 120,
+    "questionNumber": 2,
+    "type": "MCQ",
+    "questionText": "Which texture represents 'roughness' best?",
+    "imageUrl": "https://dummyimage.com/600x400/000/fff&text=NID+Mock+Q2",
+    "options": [
+      { "id": "A", "text": "Image 1", "isCorrect": true },
+      { "id": "B", "text": "Image 2", "isCorrect": false },
+      { "id": "C", "text": "Image 3", "isCorrect": false },
+      { "id": "D", "text": "Image 4", "isCorrect": false }
+    ],
+    "tags": ["Material & Texture"],
     "estimatedTimeSeconds": 60,
-    "errorDiagnostics": [
-      {
-        "wrongAnswer": "88",
-        "errorType": "Calculation Error",
-        "feedback": "You added instead of following the Fibonacci sequence."
-      }
-    ]
+    "errorDiagnostics": []
+  },
+
+  {
+    "paperName": "NID Past Year 2021",
+    "category": "NID",
+    "testDurationMinutes": 120,
+    "questionNumber": 1,
+    "type": "NAT",
+    "questionText": "If a gear with 10 teeth drives a gear with 30 teeth, what is the gear ratio?",
+    "imageUrl": null,
+    "correctNumericalAnswer": 3,
+    "acceptableRange": { "min": 3, "max": 3 },
+    "tags": ["Mechanical Ability"],
+    "estimatedTimeSeconds": 90,
+    "errorDiagnostics": []
+  },
+  {
+    "paperName": "NID Past Year 2021",
+    "category": "NID",
+    "testDurationMinutes": 120,
+    "questionNumber": 2,
+    "type": "MCQ",
+    "questionText": "What material is terracotta traditionally made from?",
+    "imageUrl": null,
+    "options": [
+      { "id": "A", "text": "Glass", "isCorrect": false },
+      { "id": "B", "text": "Clay", "isCorrect": true },
+      { "id": "C", "text": "Wood", "isCorrect": false },
+      { "id": "D", "text": "Metal", "isCorrect": false }
+    ],
+    "tags": ["General Knowledge", "Materials"],
+    "estimatedTimeSeconds": 30,
+    "errorDiagnostics": []
   }
 ]
